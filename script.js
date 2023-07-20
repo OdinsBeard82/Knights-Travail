@@ -1,21 +1,41 @@
-var chessboard = document.getElementById('chessboard');
-for (var i = 0; i < 8; i++) {
-   for (var j = 0; j < 8; j++) {
-      var chessSquare = document.createElement('div');
-      chessSquare.className = 'chess-square';
-      if ((i + j) % 2 == 0) {
-         chessSquare.style.backgroundColor = '#000';
-      }
-      chessboard.appendChild(chessSquare);
-   }
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const chessboard = document.getElementById('chessboard');
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            const chessSquare = document.createElement('div');
+            chessSquare.className = 'chess-square';
+            if ((i + j) % 2 == 0) {
+                chessSquare.style.backgroundColor = '#000';
+            }
+            chessboard.appendChild(chessSquare);
+        }
+    }
 
-function addPiece () {
-    const img = document.querySelector("image");
-    img.src = (knight.jpg);
-    document.body.appendChild(img);
-}
+    const map = [
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 'knight', 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,   
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+    ];
 
-var initialPieces = {
-    position: 40, color: 'black' typeof
-}
+    function addPiece() {
+        // Get the position of the knight from the map array
+        const knightPosition = map.indexOf('knight');
+     
+        // Calculate the row and column for the position
+        const row = Math.floor(knightPosition / 8);
+        const col = knightPosition % 8;
+     
+        // Create a new image element for the knight
+        const knightImg = document.createElement('img');
+        knightImg.src = 'knight.jpg';
+        knightImg.className = 'knight-piece'; // You can define the 'knight-piece' class in your CSS to add styles to the knight image
+        chessboard.children[knightPosition].appendChild(knightImg);
+    }    
+
+    addPiece();
+});
