@@ -1,26 +1,21 @@
-const gameBoard = document.querySelector("gameboard")
-const playerDIsplay = document.querySelector("#player")
-const infoDisplay = document.querySelector("#info-display")
-const width = 8
-
-const startPieces = [
-    '', '', '', '', '', '', '', '', 
-    '', '', '', '', '', '', '', '',
-    '', '', '', '', '', '', '', '',
-    '', '', '', '', '', '', '', '',
-    '', '', '', knight , '', '', '', '',
-    '', '', '', '', '', '', '', '',
-    '', '', '', '', '', '', '', '',
-    '', '', '', '', '', '', '', '',
-]
-
-function createBoard() {
-    startPieces.forEach((startPiece) => {
-        const square = document.createElement('div')
-        square.classList.add('square')
-        square.classList.add('beige')
-        gameBoard.append(square)
-    })
+var chessboard = document.getElementById('chessboard');
+for (var i = 0; i < 8; i++) {
+   for (var j = 0; j < 8; j++) {
+      var chessSquare = document.createElement('div');
+      chessSquare.className = 'chess-square';
+      if ((i + j) % 2 == 0) {
+         chessSquare.style.backgroundColor = '#000';
+      }
+      chessboard.appendChild(chessSquare);
+   }
 }
 
-createBoard()
+function addPiece () {
+    const img = document.querySelector("image");
+    img.src = (knight.jpg);
+    document.body.appendChild(img);
+}
+
+var initialPieces = {
+    position: 40, color: 'black' typeof
+}

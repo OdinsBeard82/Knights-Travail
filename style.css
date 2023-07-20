@@ -1,21 +1,11 @@
-.gameboard {
-    width: 320px;
-    height: 320px;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.square {
-    height: 40px;
-    width: 40px;
-  
-}
-
-.beige {
-    background-color: rgb(110,110,98);
-
-}
-
-.brown {
-    background-color: brown;
-}
+#chessboard {
+    width: 400px;
+    height: 400px;
+ }
+ .chess-square {
+    float: left;
+    width: 48px;
+    border: 1px solid black;
+    height: 48px;
+    background-color: #fff;
+ }
