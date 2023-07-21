@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     const chessboard = document.getElementById('chessboard');
-    for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 8; j++) {
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
             const chessSquare = document.createElement('div');
             chessSquare.className = 'chess-square';
-            if ((i + j) % 2 == 0) {
+            if ((x + y) % 2 == 0) {
                 chessSquare.style.backgroundColor = '#000';
             }
             chessboard.appendChild(chessSquare);
@@ -41,9 +41,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+const knightMoves = [[1 , 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
 
-const { knight } = createGame();
-knight.knightMoves([8, 8], [1, 2]);
-knight.knightMoves([1, 3], [1, 2]);
-knight.knightMoves([5, 8], [1, 1]);
-knight.knightMoves([1, 8], [8, 2]);
