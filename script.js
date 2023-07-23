@@ -12,15 +12,33 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const map = [
+        0, 'knight', 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 'knight', 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,   
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,
     ];
+    
+    const knightsMoves = [
+        [-1, 2], [1, 2],
+        [-2, 1], [2, 1],
+        [-2, -1], [2, -1],
+        [-1, -2], [1, -2]
+    ];
+
+    function moveKnight() {
+      
+
+    }
+
+    function moveTimer (){
+
+    }
+ 
+    
 
     function addPiece() {
         // Get the position of the knight from the map array
@@ -39,7 +57,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addPiece();
 });
-
-
-const knightMoves = [[1 , 2], [1, -2], [2, 1], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
 
