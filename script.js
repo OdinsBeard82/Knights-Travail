@@ -30,13 +30,30 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     function moveKnight() {
-      
+        const knightPosition = map.indexOf('knight');
+
+        const row = Math.floor(knightPosition / 8);
+        const col = knightPosition %8;
+
+        chessboard.children[knightPosition].innerhtml = '';
+
+        const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+        const newRow = row + randomMove[0];
+        const newCol = col +randomMove[1];
+
+        if (newRow >= 0 && newRow < 8 && newCOl >= 0 && newCol < 8) {
+            const newPosition = newRow * 8 + newCol;
+            map[newPosition] = 'knight';
+
+            const knightImg = document.createElement('img');
+            knightImg.src = 'knight.jpg';
+            knightImg.className = 'knght-piece';
+            chessboard.children[newPosition].appendchidl(knightImg);
+        }
 
     }
 
-    function moveTimer (){
-
-    }
+    
  
     
 
