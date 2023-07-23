@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         0, 0, 0, 0, 0, 0, 0, 0,
     ];
     
-    const knightsMoves = [
+    const possibleMoves = [
         [-1, 2], [1, 2],
         [-2, 1], [2, 1],
         [-2, -1], [2, -1],
@@ -31,28 +31,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function moveKnight() {
         const knightPosition = map.indexOf('knight');
-
+    
+        // Calculate the row and column for the position
         const row = Math.floor(knightPosition / 8);
-        const col = knightPosition %8;
-
-        chessboard.children[knightPosition].innerhtml = '';
-
+        const col = knightPosition % 8;
+    
+        // Calculate the new position randomly from the possible moves
         const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
         const newRow = row + randomMove[0];
-        const newCol = col +randomMove[1];
-
-        if (newRow >= 0 && newRow < 8 && newCOl >= 0 && newCol < 8) {
+        const newCol = col + randomMove[1];
+    
+        // Check if the new position is within the chessboard boundaries
+        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            // Remove the knight from the current position
+            chessboard.children[knightPosition].innerHTML = '';
+    
+            // Update the 'map' array with the new knight position
             const newPosition = newRow * 8 + newCol;
+            map[knightPosition] = 0;
             map[newPosition] = 'knight';
-
+    
+            // Create a new image element for the knight at the new position
             const knightImg = document.createElement('img');
             knightImg.src = 'knight.jpg';
-            knightImg.className = 'knght-piece';
-            chessboard.children[newPosition].appendchidl(knightImg);
+            knightImg.className = 'knight-piece';
+            chessboard.children[newPosition].appendChild(knightImg);
         }
-
     }
+    
 
+    setInterval(moveKnight, 600);
+;
     
  
     
