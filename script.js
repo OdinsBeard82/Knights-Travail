@@ -63,9 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(moveKnight, 600);
 ;
     
- 
-    
-
     function addPiece() {
         // Get the position of the knight from the map array
         const knightPosition = map.indexOf('knight');
@@ -83,4 +80,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addPiece();
 });
+
+
+
+function knightChoice() {
+    const chessSquares = document.getElementsByClassName('chess-square');
+
+    for (let i = 0; i < chessSquares.length; i++) {
+        chessSquares[i].addEventListener('click', function () {
+            moveKnightToSquare(i);
+
+        });
+    }
+}
+
+
+//create button for onclick
+//onclick to choose position on board
+//find night position
+//find all routes to position
+//choose shortest route to position
+//knight moves to this position
+
+
 
