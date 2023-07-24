@@ -81,6 +81,41 @@ document.addEventListener('DOMContentLoaded', function () {
     addPiece();
 });
 
+function moveKnightToSquare(squareIndex) {
+    const knightPosition = map.indexOf('knight');
+
+    // Calculate the row and column for the position
+    const currentRow = Math.floor(knightPosition / 8);
+    const currentCol = knightPosition % 8;
+
+    // Calculate the row and column for the selected square
+    const newRow = Math.floor(squareIndex / 8);
+    const newCol = squareIndex % 8;
+
+    // Check if the selected square is a valid move for the knight
+    for (const move of possibleMoves) {
+        const moveRow = currentRow + move[0];
+        const moveCol = currentCol + move[1];
+
+        if (moveRow === newRow && moveCol === newCol) {
+            // Remove the knight from the current position
+            chessboard.children[knightPosition].innerHTML = '';
+
+            // Update the 'map' array with the new knight position
+            const newPosition = newRow * 8 + newCol;
+            map[knightPosition] = 0;
+            map[newPosition] = 'knight';
+
+            // Create a new image element for the knight at the new position
+            const knightImg = document.createElement('img');
+            knightImg.src = 'knight.jpg';
+            knightImg.className = 'knight-piece';
+            chessboard.children[newPosition].appendChild(knightImg);
+
+            break; // Exit the loop once a valid move is found
+        }
+    }
+}
 
 
 function knightChoice() {
