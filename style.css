@@ -16,3 +16,7 @@
     pointer-events: none;
 }
 
+.highlight {
+    background-color: rgb(0, 255, 76);
+    transition: background-color 1s; 
+}

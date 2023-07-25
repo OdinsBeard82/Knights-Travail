@@ -1,141 +1,99 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const chessboard = document.getElementById('chessboard');
-    for (let x = 0; x < 8; x++) {
-        for (let y = 0; y < 8; y++) {
-            const chessSquare = document.createElement('div');
-            chessSquare.className = 'chess-square';
-            if ((x + y) % 2 == 0) {
-                chessSquare.style.backgroundColor = '#000';
+  const map = [
+            0, 'knight', 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+        ];
+
+        const chessboard = document.getElementById('chessboard');
+        let selectedSquare = -1;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            for (let x = 0; x < 8; x++) {
+                for (let y = 0; y < 8; y++) {
+                    const chessSquare = document.createElement('div');
+                    chessSquare.className = 'chess-square';
+                    if ((x + y) % 2 == 0) {
+                        chessSquare.style.backgroundColor = '#000';
+                    }
+                    chessboard.appendChild(chessSquare);
+                }
             }
-            chessboard.appendChild(chessSquare);
-        }
-    }
 
-    const map = [
-        0, 'knight', 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,   
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-    ];
-    
-    const possibleMoves = [
-        [-1, 2], [1, 2],
-        [-2, 1], [2, 1],
-        [-2, -1], [2, -1],
-        [-1, -2], [1, -2]
-    ];
+            function moveKnightToSquare(squareIndex) {
+                if (selectedSquare !== -1) {
+                    chessboard.children[selectedSquare].classList.remove('highlight');
+                }
 
-    function moveKnight() {
-        const knightPosition = map.indexOf('knight');
-    
-        // Calculate the row and column for the position
-        const row = Math.floor(knightPosition / 8);
-        const col = knightPosition % 8;
-    
-        // Calculate the new position randomly from the possible moves
-        const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-        const newRow = row + randomMove[0];
-        const newCol = col + randomMove[1];
-    
-        // Check if the new position is within the chessboard boundaries
-        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
-            // Remove the knight from the current position
-            chessboard.children[knightPosition].innerHTML = '';
-    
-            // Update the 'map' array with the new knight position
-            const newPosition = newRow * 8 + newCol;
-            map[knightPosition] = 0;
-            map[newPosition] = 'knight';
-    
-            // Create a new image element for the knight at the new position
-            const knightImg = document.createElement('img');
-            knightImg.src = 'knight.jpg';
-            knightImg.className = 'knight-piece';
-            chessboard.children[newPosition].appendChild(knightImg);
-        }
-    }
-    
+                const knightPosition = map.indexOf('knight');
 
-    setInterval(moveKnight, 600);
-;
-    
-    function addPiece() {
-        // Get the position of the knight from the map array
-        const knightPosition = map.indexOf('knight');
-     
-        // Calculate the row and column for the position
-        const row = Math.floor(knightPosition / 8);
-        const col = knightPosition % 8;
-     
-        // Create a new image element for the knight
-        const knightImg = document.createElement('img');
-        knightImg.src = 'knight.jpg';
-        knightImg.className = 'knight-piece'; // You can define the 'knight-piece' class in your CSS to add styles to the knight image
-        chessboard.children[knightPosition].appendChild(knightImg);
-    }    
+                // Calculate the row and column for the current position of the knight
+                const currentRow = Math.floor(knightPosition / 8);
+                const currentCol = knightPosition % 8;
 
-    addPiece();
-});
+                // Calculate the row and column for the selected square
+                const newRow = Math.floor(squareIndex / 8);
+                const newCol = squareIndex % 8;
 
-function moveKnightToSquare(squareIndex) {
-    const knightPosition = map.indexOf('knight');
+                // Check if the selected square is a valid move for the knight
+                const validMoves = [
+                    [-1, 2], [1, 2],
+                    [-2, 1], [2, 1],
+                    [-2, -1], [2, -1],
+                    [-1, -2], [1, -2]
+                ];
 
-    // Calculate the row and column for the position
-    const currentRow = Math.floor(knightPosition / 8);
-    const currentCol = knightPosition % 8;
+                const isValidMove = validMoves.some(move => move[0] === newRow - currentRow && move[1] === newCol - currentCol);
 
-    // Calculate the row and column for the selected square
-    const newRow = Math.floor(squareIndex / 8);
-    const newCol = squareIndex % 8;
+                if (isValidMove) {
+                    // Remove the knight from the current position
+                    chessboard.children[knightPosition].innerHTML = '';
 
-    // Check if the selected square is a valid move for the knight
-    for (const move of possibleMoves) {
-        const moveRow = currentRow + move[0];
-        const moveCol = currentCol + move[1];
+                    // Update the 'map' array with the new knight position
+                    map[knightPosition] = 0;
+                    map[squareIndex] = 'knight';
 
-        if (moveRow === newRow && moveCol === newCol) {
-            // Remove the knight from the current position
-            chessboard.children[knightPosition].innerHTML = '';
+                    // Create a new image element for the knight at the new position
+                    const knightImg = document.createElement('img');
+                    knightImg.src = 'knight.jpg';
+                    knightImg.className = 'knight-piece';
+                    chessboard.children[squareIndex].appendChild(knightImg);
 
-            // Update the 'map' array with the new knight position
-            const newPosition = newRow * 8 + newCol;
-            map[knightPosition] = 0;
-            map[newPosition] = 'knight';
+                    selectedSquare = squareIndex;
+                }
+            }
 
-            // Create a new image element for the knight at the new position
-            const knightImg = document.createElement('img');
-            knightImg.src = 'knight.jpg';
-            knightImg.className = 'knight-piece';
-            chessboard.children[newPosition].appendChild(knightImg);
+            function addPiece() {
+                // Get the position of the knight from the map array
+                const knightPosition = map.indexOf('knight');
 
-            break; // Exit the loop once a valid move is found
-        }
-    }
-}
+                // Create a new image element for the knight
+                const knightImg = document.createElement('img');
+                knightImg.src = 'knight.jpg';
+                knightImg.className = 'knight-piece';
+                chessboard.children[knightPosition].appendChild(knightImg);
+            }
 
+            function knightChoice() {
+                const chessSquares = document.getElementsByClassName('chess-square');
 
-function knightChoice() {
-    const chessSquares = document.getElementsByClassName('chess-square');
+                for (let i = 0; i < chessSquares.length; i++) {
+                    chessSquares[i].addEventListener('click', function () {
+                        chessSquares[i].classList.add('highlight');
+                        moveKnightToSquare(i);
 
-    for (let i = 0; i < chessSquares.length; i++) {
-        chessSquares[i].addEventListener('click', function () {
-            moveKnightToSquare(i);
+                        setTimeout(function () {
+                            chessSquares[i].classList.remove('highlight');
+                        }, 1000);
+                        
+                    });
+                }
+            }
 
+            addPiece();
+            knightChoice();
         });
-    }
-}
-
-
-//create button for onclick
-//onclick to choose position on board
-//find night position
-//find all routes to position
-//choose shortest route to position
-//knight moves to this position
-
-
-
