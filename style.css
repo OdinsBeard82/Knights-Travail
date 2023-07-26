@@ -5,9 +5,9 @@
 .chess-square {
     float: left;
     width: 48px;
-    border: 1px solid black;
+    border: 1px solid #855E42;
     height: 48px;
-    background-color: #fff;
+    background-color: #ffe9c5;
 }
 .knight-piece {
     width: 100%;

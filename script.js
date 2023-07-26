@@ -1,7 +1,7 @@
 const chessboard = document.getElementById('chessboard');
 let knightPosition = {
-    row: 8,
-    col: 0 
+    row: 7,
+    col: 0
 };
 
 class Node {
@@ -20,10 +20,9 @@ class Tree {
 }
 
 function insertNode(root, row, col) {
-    const node = this.root; 
+    const node = this.root;
     if (node === null) {
         return new Node(row, col);
-    
     }
 
     if (row < root.row || (row === root.row && col < root.col)) {
@@ -36,7 +35,30 @@ function insertNode(root, row, col) {
 }
 
 function isValidMove(row, col) {
-    return row >= 0 && row < 8 && col >= 0 && col <8;
+    return row >= 0 && row < 8 && col >= 0 && col < 8;
+}
+
+function addKnight() {
+    const knightImg = document.createElement('img');
+    knightImg.src = 'knight.jpg';
+    knightImg.className = 'knight-piece';
+    chessboard.children[knightPosition.row * 8 + knightPosition.col].appendChild(knightImg);
+}
+
+function moveKnightToSquare(row, col) {
+    if (!isValidMove(row, col)) {
+        return;
+    }
+
+    knightPosition.row = row;
+    knightPosition.col = col;
+
+    const knightPiece = document.querySelector('.knight-piece');
+    if (knightPiece) {
+        knightPiece.remove();
+    }
+
+    addKnight();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -44,16 +66,13 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let y = 0; y < 8; y++) {
             const chessSquare = document.createElement('div');
             chessSquare.className = 'chess-square';
-            if ((x + y) % 2 == 0) {
-                chessSquare.style.backgroundColor = '#000';
+            if ((x + y) % 2 === 0) {
+                chessSquare.style.backgroundColor = '#855E42';
             }
             chessboard.appendChild(chessSquare);
         }
     }
-
+    addKnight();
+    moveKnightToSquare(7,1);
 });
-
-
-
-
 
