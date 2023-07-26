@@ -35,6 +35,9 @@ function insertNode(root, row, col) {
     return root;
 }
 
+function isValidMove(row, col) {
+    return row >= 0 && row < 8 && col >= 0 && col <8;
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     for (let x = 0; x < 8; x++) {
