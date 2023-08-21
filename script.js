@@ -6,6 +6,16 @@ class Node {
     }
   }
 
+  const possibleMoves = [
+    [-2, 1], 
+    [-1, 2], 
+    [1, 2], 
+    [2, 1],
+    [2, -1], 
+    [1, -2], 
+    [-1, -2], 
+    [-2, -1]
+];
   
 // adds chessboard to HTML element
 const chessboard = document.getElementById('chessboard');
@@ -63,75 +73,52 @@ document.addEventListener('DOMContentLoaded', function () {
     }    
 
     addKnight2();
-    
 
-    const possibleMoves = [   
-        [-1, 2], 
-        [1, 2],
-        [-2, 1], 
-        [2, 1],
-        [-2, -1], 
-        [2, -1],
-        [-1, -2], 
-        [1, -2]
-    ];
-
-
-function minKnightMoves(x, y) {
-        // Keeps track of visited positions in BFS search
-        const visited = new Map();
-        const queue = [[0, 0]]; // Queue now holds coordinates as arrays
-        visited.set('0,0', 0); // Set initial position as visited with distance 0
-    
-        // Continue BFS until the queue is empty
-        while (queue.length > 0) {
-            const [curX, curY] = queue.shift();
-            
-            // Check if we've reached the target position
-            if (curX === x && curY === y) {
-                return visited.get(`${x},${y}`);
-            }
-            
-            for (const [rowOffset, colOffset] of possibleMoves) {
-                const nextX = curX + rowOffset;
-                const nextY = curY + colOffset;
-                const nextKey = `${nextX},${nextY}`;
-                
-                if (
-                    nextX >= -1 && nextY >= -1 && // Allow extra steps to be explored
-                    !visited.has(nextKey)
-                ) {
-                    queue.push([nextX, nextY]);
-                    visited.set(nextKey, visited.get(`${curX},${curY}`) + 1);
-                    visited.size;
-                    visited.get(7,7);
-                    
-                }
-
-            }
-        }
-    
-        // Target position is unreachable
-        return -1;
-           
+    function convertToIndex(position) {
+        return position.row * 8 + position.col;
     }
 
 
+    function minKnightMoves(possibleMoves, start, end) {
+        const startIndex = convertToIndex(start);
+        const endIndex = convertToIndex(end);
+        let queue = [startIndex];
+        let prev = {[startIndex]: null};
 
-  const button = document.querySelector("button");
+        while (queue.length > 0) {
+            let currIndex = queue.shift();
+            let currPosition = { row: Math.floor(currIndex / 8), col: currIndex % 8 };
 
-  button.addEventListener("click", (event) => {
-    button.textContent = `Click count: ${event.detail}`;
-  });
+            if (currIndex === endIndex) {
+                let path = [];
+                while (currIndex !== null) {
+                    path.unshift(currPosition);
+                    currIndex = prev[currIndex];
+                    currPosition = { row: Math.floor(currIndex / 8), col: currIndex % 8 };
+                }
+                console.log("Shortest path:", path);
+                console.log(path.length);
+                return path;
+            }
+            for (let move of possibleMoves) {
+                const newRow = currPosition.row + move[0];
+                const newCol = currPosition.col + move[1];
+                const newPosition = { row: newRow, col: newCol };
+                const newIndex = convertToIndex(newPosition);
 
-  let myKnight= new addKnight();
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 && !(newIndex in prev)) {
+                    prev[newIndex] = currIndex;
+                    queue.push(newIndex);
+                }
+            }
+        }
+    }
 
+    // Call the function to calculate and log the shortest path
+    const start = { row: 0, col: 1 };
+    const end = { row: 7, col: 7 };
+    minKnightMoves(possibleMoves, start, end);
 
-    const result = minKnightMoves(7, 7); 
-    
-    console.log(result); // Print the minimum number of moves
-    console.log(minKnightMoves(0,1, 2,3,));
-    console.log(pathToEnd);
-})
+    console.log('Start and end positions', start, end);
 
-
+});
