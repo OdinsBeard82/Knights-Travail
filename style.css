@@ -20,3 +20,38 @@
     background-color: rgb(0, 255, 76);
     transition: background-color 1s; 
 }
+
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+    margin: 20px 20px;
+  }
+  
+  .black {
+    width: 40px;
+    height: 40px;
+    background: black;
+  }
+  
+  .white {
+    width: 40px;
+    height: 40px;
+    background: white;
+  }
+  
+  [data-row]:before {
+    content: attr(data-row);
+    position: absolute;
+    margin: 12px -15px;
+  }
+  
+  [data-col]:before {
+    content: attr(data-col);
+    position: absolute;
+    margin: 25px 14px;
+  }
