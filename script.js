@@ -21,7 +21,7 @@ const possibleMoves = [
 ];
 
 const chessboard = document.getElementById('chessboard');
-const pathDisplay = document.getElementById('path-display'); // Add this line
+const pathDisplay = document.getElementById('path-display'); 
 
 let knightPosition = new Node([0, 0]);
 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const currentPos = path[index];
 
                 addKnight(new Node(currentPos));
-                chessboard.children[convertToIndex(currentPos)].classList.add('path-square'); // Add this line
+                chessboard.children[convertToIndex(currentPos)].classList.add('path-square'); 
 
                 index++;
             } else {
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const shortestPath = knightMoves(knightPosition.value, clickedPosition);
         moveKnightOneStep(shortestPath);
         console.log("Shortest Path:", shortestPath);
-        pathDisplay.textContent = `Shortest Path: ${JSON.stringify(shortestPath)}`; // Add this line
+        pathDisplay.textContent = `Shortest Path: ${JSON.stringify(shortestPath)}`; 
     }
 
     addClickListeners();
