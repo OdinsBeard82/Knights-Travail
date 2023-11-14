@@ -3,6 +3,10 @@ class Node {
         this.value = value;
         this.parent = null;
     }
+
+    reset() {
+        this.parent = null;
+    }
 }
 
 const possibleMoves = [
@@ -17,6 +21,7 @@ const possibleMoves = [
 ];
 
 const chessboard = document.getElementById('chessboard');
+const pathDisplay = document.getElementById('path-display'); // Add this line
 
 let knightPosition = new Node([0, 0]);
 
@@ -51,14 +56,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (index < path.length) {
                 const currentPos = path[index];
 
-                // Add the knight to the current position
                 addKnight(new Node(currentPos));
+                chessboard.children[convertToIndex(currentPos)].classList.add('path-square'); // Add this line
 
                 index++;
             } else {
                 clearInterval(intervalId);
             }
-        }, 1000); // Adjust the delay (in milliseconds) between moves as needed
+        }, 100); 
     }
 
     function moveKnightOneStep(path) {
@@ -68,20 +73,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 const currentPos = path[index];
                 const nextPos = path[index + 1];
 
-                // Remove the knight from the current position
                 chessboard.children[convertToIndex(currentPos)].innerHTML = '';
+                chessboard.children[convertToIndex(currentPos)].classList.remove('path-square'); // Add this line
 
-                // Update the knight's position
                 knightPosition.value = nextPos;
 
-                // Add the knight to the new position
                 addKnight(new Node(nextPos));
+                chessboard.children[convertToIndex(nextPos)].classList.add('path-square'); // Add this line
 
                 index++;
             } else {
                 clearInterval(intervalId);
             }
-        }, 1000); // Adjust the delay (in milliseconds) between moves as needed
+        }, 500); 
     }
 
     function addClickListeners() {
@@ -92,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleSquareClick(square) {
-        document.querySelectorAll('.chess-square').forEach(s => s.classList.remove('selected', 'highlight'));
+        document.querySelectorAll('.chess-square').forEach(s => s.classList.remove('selected', 'highlight', 'path-square'));
 
         const clickedIndex = Array.from(chessboard.children).indexOf(square);
         const clickedPosition = [Math.floor(clickedIndex / 8), clickedIndex % 8];
@@ -102,11 +106,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const shortestPath = knightMoves(knightPosition.value, clickedPosition);
         moveKnightOneStep(shortestPath);
         console.log("Shortest Path:", shortestPath);
+        pathDisplay.textContent = `Shortest Path: ${JSON.stringify(shortestPath)}`; // Add this line
     }
 
     addClickListeners();
 
-    // Function to find the shortest path using breadth-first search
+    const resetButton = document.getElementById('reset-button');
+    resetButton.addEventListener('click', resetBoard);
+
+    function resetBoard() {
+        document.querySelectorAll('.chess-square').forEach(square => {
+            square.classList.remove('selected', 'highlight', 'path-square');
+        });
+
+        chessboard.children[convertToIndex(knightPosition.value)].innerHTML = '';
+
+        knightPosition.value = [0, 0];
+        addKnight(knightPosition);
+
+        pathDisplay.textContent = 'Select a square to move the knight';
+    }
+
     function knightMoves(start, end) {
         const queue = [new Node(start)];
         const visited = new Set();
