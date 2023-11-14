@@ -1,57 +1,83 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.movie-header {
+  background-color: #1a1a1a; 
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+}
+
 #chessboard {
-    width: 400px;
-    height: 400px;
+  width: 400px;
+  height: 400px;
+  margin: auto;
+  background-color: #2b2b2b; 
+  border: 5px solid #1a1a1a; 
+  padding: 20px;
 }
+
 .chess-square {
-    float: left;
-    width: 48px;
-    border: 1px solid #855E42;
-    height: 48px;
-    background-color: #ffe9c5;
+  float: left;
+  width: 48px;
+  border: 1px solid #855E42;
+  height: 48px;
+  background-color: #ffe9c5;
 }
+
 .knight-piece {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
 }
 
 .highlight {
-    background-color: rgb(0, 255, 76);
-    transition: background-color 1s; 
+  background-color: rgb(0, 255, 76);
+  transition: background-color 1s; 
 }
 
 * {
-    margin: 0;
-    padding: 0;
-  }
-  
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    margin: 20px 20px;
-  }
-  
-  .black {
-    width: 40px;
-    height: 40px;
-    background: black;
-  }
-  
-  .white {
-    width: 40px;
-    height: 40px;
-    background: white;
-  }
-  
-  [data-row]:before {
-    content: attr(data-row);
-    position: absolute;
-    margin: 12px -15px;
-  }
-  
-  [data-col]:before {
-    content: attr(data-col);
-    position: absolute;
-    margin: 25px 14px;
-  }
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-spacing: 0;
+  border: 1px solid black;
+  margin: 20px 20px;
+}
+
+.black {
+  width: 40px;
+  height: 40px;
+  background: black;
+}
+
+.white {
+  width: 40px;
+  height: 40px;
+  background: white;
+}
+
+[data-row]:before {
+  content: attr(data-row);
+  position: absolute;
+  margin: 12px -15px;
+}
+
+[data-col]:before {
+  content: attr(data-col);
+  position: absolute;
+  margin: 25px 14px;
+}
+
+.selected {
+  transform: scale(1.2);
+  transition: transform 0.1s ease; 
+}
+

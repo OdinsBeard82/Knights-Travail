@@ -1,124 +1,142 @@
-// Chessboard and Knight
 class Node {
     constructor(value) {
-      this.value = value;
-      this.children = [];
+        this.value = value;
+        this.parent = null;
     }
-  }
+}
 
-  const possibleMoves = [
-    [-2, 1], 
-    [-1, 2], 
-    [1, 2], 
+const possibleMoves = [
+    [-2, 1],
+    [-1, 2],
+    [1, 2],
     [2, 1],
-    [2, -1], 
-    [1, -2], 
-    [-1, -2], 
+    [2, -1],
+    [1, -2],
+    [-1, -2],
     [-2, -1]
 ];
-  
-// adds chessboard to HTML element
+
 const chessboard = document.getElementById('chessboard');
 
-let knightPosition = new Node({ row: 0, col: 1 });
-let knightPosition2 = new Node({ row: 0, col: 6 });
+let knightPosition = new Node([0, 0]);
 
-
-// adds an event listener to the document's "DOMContentLoaded" event.
 document.addEventListener('DOMContentLoaded', function () {
     for (let x = 0; x < 8; x++) {
         for (let y = 0; y < 8; y++) {
-            // creates a new HTML div element that will represent a single chess square on the grid.
             const chessSquare = document.createElement('div');
-            // This assigns the CSS class name "chess-square" to the created div element.
             chessSquare.className = 'chess-square';
-            //even number equals coloured chess-square
             if ((x + y) % 2 === 0) {
                 chessSquare.style.backgroundColor = '#855E42';
             }
-            //  this line appends the newly created chess square div element to the chessboard element.
             chessboard.appendChild(chessSquare);
         }
     }
-   
 
-    function addKnight() {
-
-        // Create image element.
+    function addKnight(position) {
         const knightImg = document.createElement('img');
-        // Assign image source.
         knightImg.src = 'knight.jpg';
-        // Set CSS class for styling.
         knightImg.className = 'knight-piece';
-    
-        // Append the knight image to the current knight position on the chessboard.
-        chessboard.children[knightPosition.value.row * 8 + knightPosition.value.col].appendChild(knightImg);
-
-    }    
-
-    addKnight();
-
-    function addKnight2() {
-
-        // Create image element.
-        const knightImg = document.createElement('img');
-        // Assign image source.
-        knightImg.src = 'knight.jpg';
-        // Set CSS class for styling.
-        knightImg.className = 'knight-piece';
-    
-        // Append the knight image to the current knight position on the chessboard.
-        chessboard.children[knightPosition2.value.row * 8 + knightPosition2.value.col].appendChild(knightImg);
-
-    }    
-
-    addKnight2();
-
-    function convertToIndex(position) {
-        return position.row * 8 + position.col;
+        chessboard.children[position.value[0] * 8 + position.value[1]].appendChild(knightImg);
     }
 
+    addKnight(knightPosition);
 
-    function minKnightMoves(possibleMoves, start, end) {
-        const startIndex = convertToIndex(start);
-        const endIndex = convertToIndex(end);
-        let queue = [startIndex];
-        let prev = {[startIndex]: null};
+    function convertToIndex(position) {
+        return position[0] * 8 + position[1];
+    }
+
+    function highlightPath(path) {
+        let index = 0;
+        const intervalId = setInterval(() => {
+            if (index < path.length) {
+                const currentPos = path[index];
+
+                // Add the knight to the current position
+                addKnight(new Node(currentPos));
+
+                index++;
+            } else {
+                clearInterval(intervalId);
+            }
+        }, 1000); // Adjust the delay (in milliseconds) between moves as needed
+    }
+
+    function moveKnightOneStep(path) {
+        let index = 0;
+        const intervalId = setInterval(() => {
+            if (index < path.length - 1) {
+                const currentPos = path[index];
+                const nextPos = path[index + 1];
+
+                // Remove the knight from the current position
+                chessboard.children[convertToIndex(currentPos)].innerHTML = '';
+
+                // Update the knight's position
+                knightPosition.value = nextPos;
+
+                // Add the knight to the new position
+                addKnight(new Node(nextPos));
+
+                index++;
+            } else {
+                clearInterval(intervalId);
+            }
+        }, 1000); // Adjust the delay (in milliseconds) between moves as needed
+    }
+
+    function addClickListeners() {
+        const chessSquares = document.querySelectorAll('.chess-square');
+        chessSquares.forEach(square => {
+            square.addEventListener('click', () => handleSquareClick(square));
+        });
+    }
+
+    function handleSquareClick(square) {
+        document.querySelectorAll('.chess-square').forEach(s => s.classList.remove('selected', 'highlight'));
+
+        const clickedIndex = Array.from(chessboard.children).indexOf(square);
+        const clickedPosition = [Math.floor(clickedIndex / 8), clickedIndex % 8];
+
+        square.classList.add('selected');
+
+        const shortestPath = knightMoves(knightPosition.value, clickedPosition);
+        moveKnightOneStep(shortestPath);
+        console.log("Shortest Path:", shortestPath);
+    }
+
+    addClickListeners();
+
+    // Function to find the shortest path using breadth-first search
+    function knightMoves(start, end) {
+        const queue = [new Node(start)];
+        const visited = new Set();
+        visited.add(start.toString());
 
         while (queue.length > 0) {
-            let currIndex = queue.shift();
-            let currPosition = { row: Math.floor(currIndex / 8), col: currIndex % 8 };
+            const currentNode = queue.shift();
 
-            if (currIndex === endIndex) {
+            if (currentNode && currentNode.value[0] === end[0] && currentNode.value[1] === end[1]) {
                 let path = [];
-                while (currIndex !== null) {
-                    path.unshift(currPosition);
-                    currIndex = prev[currIndex];
-                    currPosition = { row: Math.floor(currIndex / 8), col: currIndex % 8 };
+                let current = currentNode;
+                while (current !== null) {
+                    path.unshift(current.value);
+                    current = current.parent;
                 }
-                console.log("Shortest path:", path);
-                console.log(path.length);
                 return path;
             }
-            for (let move of possibleMoves) {
-                const newRow = currPosition.row + move[0];
-                const newCol = currPosition.col + move[1];
-                const newPosition = { row: newRow, col: newCol };
-                const newIndex = convertToIndex(newPosition);
 
-                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 && !(newIndex in prev)) {
-                    prev[newIndex] = currIndex;
-                    queue.push(newIndex);
+            for (let move of possibleMoves) {
+                const newRow = currentNode.value[0] + move[0];
+                const newCol = currentNode.value[1] + move[1];
+                const newPosition = [newRow, newCol];
+
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 && !visited.has(newPosition.toString())) {
+                    const newNode = new Node(newPosition);
+                    newNode.parent = currentNode;
+                    queue.push(newNode);
+                    visited.add(newPosition.toString());
                 }
             }
         }
     }
-
-    // Call the function to calculate and log the shortest path
-    const start = { row: 0, col: 1 };
-    const end = { row: 7, col: 7 };
-    minKnightMoves(possibleMoves, start, end);
-
-    console.log('Start and end positions', start, end);
-
 });
