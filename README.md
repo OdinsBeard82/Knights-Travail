@@ -3,6 +3,10 @@
 
 <img width="689" alt="Screenshot 2023-11-14 at 10 29 19" src="https://github.com/OdinsBeard82/Knights-Travail/assets/113264602/21fc4715-9449-416f-9a8a-84a140293b74">
 
+## Live Demo
+[Live Demo on Netlify](https://6554e591010abc26e395a16f--fabulous-hotteok-6563d0.netlify.app/)
+
+
 # Knight Moves
 
 This project implements a solution for finding the shortest path for a knight on an 8x8 chessboard using breadth-first search (BFS) and depth-first search (DFS) algorithms. The goal is to determine the optimal moves for a knight to reach from one square to another on the chessboard.
